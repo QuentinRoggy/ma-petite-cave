@@ -1,0 +1,18 @@
+{
+  "name": "ma-petite-cave",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"pnpm dev:backend\" \"pnpm dev:frontend\"",
+    "dev:backend": "cd packages/api && pnpm dev",
+    "dev:frontend": "cd packages/app && pnpm dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.12.3",
+  "dependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
