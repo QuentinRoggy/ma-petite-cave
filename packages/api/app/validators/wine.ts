@@ -2,6 +2,7 @@ import vine from '@vinejs/vine'
 
 export const createWineValidator = vine.compile(
   vine.object({
+    type: vine.enum(['cave', 'wishlist']),
     name: vine.string().trim().minLength(1).maxLength(255),
     domain: vine.string().trim().maxLength(255).optional(),
     vintage: vine.number().min(1900).max(2100).optional(),
@@ -15,6 +16,7 @@ export const createWineValidator = vine.compile(
 
 export const updateWineValidator = vine.compile(
   vine.object({
+    type: vine.enum(['cave', 'wishlist']).optional(),
     name: vine.string().trim().minLength(1).maxLength(255).optional(),
     domain: vine.string().trim().maxLength(255).nullable().optional(),
     vintage: vine.number().min(1900).max(2100).nullable().optional(),
@@ -28,6 +30,7 @@ export const updateWineValidator = vine.compile(
 
 export const indexWineValidator = vine.compile(
   vine.object({
+    type: vine.enum(['cave', 'wishlist']),
     query: vine.string().trim().optional(),
     rated: vine.enum(['true', 'false']).optional(),
     color: vine.enum(['rouge', 'blanc', 'rosé', 'pétillant']).optional(),

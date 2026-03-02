@@ -33,6 +33,7 @@ router
     router.get('wines/:id', [WinesController, 'show'])
     router.patch('wines/:id', [WinesController, 'update'])
     router.delete('wines/:id', [WinesController, 'destroy'])
+    router.post('wines/:id/move-to-cave', [WinesController, 'moveToCave'])
   })
   .use(middleware.auth())
 

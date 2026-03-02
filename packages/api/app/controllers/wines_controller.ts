@@ -7,7 +7,10 @@ export default class WinesController {
     const user = auth.user!
     const filters = await request.validateUsing(indexWineValidator)
 
-    const query = Wine.query().where('userId', user.id).orderBy('createdAt', 'desc')
+    const query = Wine.query()
+      .where('userId', user.id)
+      .where('type', filters.type)
+      .orderBy('createdAt', 'desc')
 
     if (filters.query) {
       const search = `%${filters.query}%`
@@ -60,5 +63,17 @@ export default class WinesController {
       .firstOrFail()
     await wine.delete()
     return response.noContent()
+  }
+
+  async moveToCave({ auth, params }: HttpContext) {
+    const wine = await Wine.query()
+      .where('id', params.id)
+      .where('userId', auth.user!.id)
+      .where('type', 'wishlist')
+      .firstOrFail()
+
+    wine.type = 'cave'
+    await wine.save()
+    return { wine }
   }
 }

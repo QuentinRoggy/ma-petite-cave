@@ -6,7 +6,12 @@
       "Bash(pnpm add:*)",
       "Bash(npx shadcn@latest add:*)",
       "Bash(npx next build:*)",
-      "Bash(node ace build:*)"
+      "Bash(node ace build:*)",
+      "Bash(xargs cat:*)",
+      "Bash(node ace migration:run:*)",
+      "Bash(cat:*)",
+      "Bash(node -e:*)",
+      "Bash(python3:*)"
     ]
   }
 }

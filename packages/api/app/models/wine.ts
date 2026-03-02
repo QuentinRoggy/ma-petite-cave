@@ -13,6 +13,9 @@ export default class Wine extends BaseModel {
   declare userId: number
 
   @column()
+  declare type: 'cave' | 'wishlist'
+
+  @column()
   declare name: string
 
   @column()
