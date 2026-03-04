@@ -4,8 +4,6 @@ import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import User from '#models/user'
 
 export default class Wine extends BaseModel {
-  static selfAssignPrimaryKey = true
-
   @column({ isPrimary: true })
   declare id: string
 

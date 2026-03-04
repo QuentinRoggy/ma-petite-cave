@@ -107,13 +107,12 @@ export function WineForm({ wine, mode, wineType = 'cave' }: WineFormProps) {
       const basePath = isWishlist ? '/wishlist' : '/wines'
 
       if (mode === 'create') {
-        router.push(`${basePath}/${data.wine.id}`)
         toast.success(isWishlist ? 'Ajouté à la wishlist' : 'Vin ajouté avec succès')
+        router.push(`${basePath}/${data.wine.id}`)
       } else {
-        router.push(`${basePath}/${wine!.id}`)
         toast.success('Modifications enregistrées')
+        router.push(`${basePath}/${wine!.id}`)
       }
-      router.refresh()
     } catch {
       setError('Une erreur est survenue')
     } finally {

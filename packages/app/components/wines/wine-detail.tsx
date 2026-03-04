@@ -50,7 +50,6 @@ export function WineDetail({ wine }: { wine: Wine }) {
       if (res.ok || res.status === 204) {
         toast.success('Vin supprimé')
         router.push(backPath)
-        router.refresh()
       }
     } catch {
       toast.error('Erreur lors de la suppression')
@@ -65,7 +64,6 @@ export function WineDetail({ wine }: { wine: Wine }) {
       if (res.ok) {
         toast.success('Vin ajouté à votre cave !')
         router.push(`/wines/${wine.id}`)
-        router.refresh()
       } else {
         toast.error('Erreur lors du déplacement')
         setMoving(false)
