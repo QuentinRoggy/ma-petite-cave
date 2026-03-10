@@ -43,7 +43,8 @@ export default function LoginPage() {
         return
       }
 
-      router.push('/wines')
+      // Le middleware redirigera vers la bonne page selon le rôle
+      router.push('/')
       router.refresh()
     } catch {
       setError('Une erreur est survenue')
@@ -55,8 +56,8 @@ export default function LoginPage() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl">Ma Petite Cave</CardTitle>
-        <CardDescription>Connectez-vous pour accéder à votre cave</CardDescription>
+        <CardTitle className="text-2xl">Cuvee</CardTitle>
+        <CardDescription>Connectez-vous à votre espace</CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent className="flex flex-col gap-4">

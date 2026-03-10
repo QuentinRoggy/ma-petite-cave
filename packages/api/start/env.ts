@@ -35,4 +35,29 @@ export default await Env.create(new URL('../', import.meta.url), {
   R2_BUCKET: Env.schema.string(),
   R2_ENDPOINT: Env.schema.string(),
   R2_PUBLIC_URL: Env.schema.string(),
+
+  /*
+  |----------------------------------------------------------
+  | Variables for configuring mail (SMTP)
+  |----------------------------------------------------------
+  */
+  SMTP_HOST: Env.schema.string(),
+  SMTP_PORT: Env.schema.number(),
+  SMTP_USERNAME: Env.schema.string.optional(),
+  SMTP_PASSWORD: Env.schema.string.optional(),
+  MAIL_FROM: Env.schema.string(),
+
+  /*
+  |----------------------------------------------------------
+  | Variables for configuring Redis (Bull Queue)
+  |----------------------------------------------------------
+  */
+  REDIS_URL: Env.schema.string(),
+
+  /*
+  |----------------------------------------------------------
+  | App URL for email links
+  |----------------------------------------------------------
+  */
+  APP_URL: Env.schema.string(),
 })

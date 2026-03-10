@@ -11,7 +11,18 @@
       "Bash(node ace migration:run:*)",
       "Bash(cat:*)",
       "Bash(node -e:*)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(node ace make:migration:*)",
+      "Bash(npx tsc:*)",
+      "Bash(node ace:*)",
+      "Bash(pnpm build:*)",
+      "Bash(pnpm tsc:*)",
+      "Bash(pnpm dlx:*)",
+      "Bash(node --import=tsx:*)",
+      "Bash(curl:*)",
+      "Bash(done)",
+      "Bash(git checkout:*)",
+      "Bash(pnpm typecheck:*)"
     ]
   }
 }

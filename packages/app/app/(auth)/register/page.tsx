@@ -14,11 +14,15 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { cn } from '@/lib/utils'
+
+type Role = 'client' | 'merchant'
 
 export default function RegisterPage() {
   const router = useRouter()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [role, setRole] = useState<Role>('client')
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -26,15 +30,23 @@ export default function RegisterPage() {
     setLoading(true)
 
     const formData = new FormData(e.currentTarget)
-    const fullName = formData.get('fullName') as string
-    const email = formData.get('email') as string
-    const password = formData.get('password') as string
+    const payload: Record<string, string> = {
+      fullName: formData.get('fullName') as string,
+      email: formData.get('email') as string,
+      password: formData.get('password') as string,
+      role,
+    }
+
+    // Ajouter shopName si c'est un caviste
+    if (role === 'merchant') {
+      payload.shopName = formData.get('shopName') as string
+    }
 
     try {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ fullName, email, password }),
+        body: JSON.stringify(payload),
       })
 
       const data = await res.json()
@@ -44,7 +56,8 @@ export default function RegisterPage() {
         return
       }
 
-      router.push('/wines')
+      // Le middleware redirigera vers la bonne page selon le rôle
+      router.push('/')
       router.refresh()
     } catch {
       setError('Une erreur est survenue')
@@ -57,13 +70,45 @@ export default function RegisterPage() {
     <Card>
       <CardHeader>
         <CardTitle className="text-2xl">Créer un compte</CardTitle>
-        <CardDescription>Inscrivez-vous pour gérer votre cave</CardDescription>
+        <CardDescription>Rejoignez Cuvee</CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent className="flex flex-col gap-4">
           {error && (
             <p className="text-destructive text-sm">{error}</p>
           )}
+
+          {/* Sélection du rôle */}
+          <div className="flex flex-col gap-2">
+            <Label>Je suis</Label>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => setRole('client')}
+                className={cn(
+                  'p-3 rounded-md border text-sm font-medium transition-colors',
+                  role === 'client'
+                    ? 'border-primary bg-primary/10 text-primary'
+                    : 'border-input hover:bg-muted'
+                )}
+              >
+                Client
+              </button>
+              <button
+                type="button"
+                onClick={() => setRole('merchant')}
+                className={cn(
+                  'p-3 rounded-md border text-sm font-medium transition-colors',
+                  role === 'merchant'
+                    ? 'border-primary bg-primary/10 text-primary'
+                    : 'border-input hover:bg-muted'
+                )}
+              >
+                Caviste
+              </button>
+            </div>
+          </div>
+
           <div className="flex flex-col gap-2">
             <Label htmlFor="fullName">Nom complet</Label>
             <Input
@@ -74,6 +119,19 @@ export default function RegisterPage() {
               required
             />
           </div>
+
+          {role === 'merchant' && (
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="shopName">Nom de la boutique</Label>
+              <Input
+                id="shopName"
+                name="shopName"
+                type="text"
+                required
+              />
+            </div>
+          )}
+
           <div className="flex flex-col gap-2">
             <Label htmlFor="email">Email</Label>
             <Input

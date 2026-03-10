@@ -1,17 +1,15 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, belongsTo } from '@adonisjs/lucid/orm'
-import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import { BaseModel, column, belongsTo, hasMany } from '@adonisjs/lucid/orm'
+import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
 import User from '#models/user'
+import BoxWine from '#models/box_wine'
 
 export default class Wine extends BaseModel {
   @column({ isPrimary: true })
   declare id: string
 
   @column()
-  declare userId: number
-
-  @column()
-  declare type: 'cave' | 'wishlist'
+  declare merchantId: number
 
   @column()
   declare name: string
@@ -26,16 +24,31 @@ export default class Wine extends BaseModel {
   declare color: 'rouge' | 'blanc' | 'rosé' | 'pétillant' | null
 
   @column()
-  declare merchantNotes: string | null
+  declare region: string | null
 
   @column()
-  declare personalNotes: string | null
+  declare grapes: string | null
 
   @column()
-  declare rating: number | null
+  declare alcoholDegree: number | null
 
   @column()
-  declare photoUrl: string
+  declare aromas: string[] | null
+
+  @column()
+  declare foodPairings: string[] | null
+
+  @column()
+  declare guardMin: number | null
+
+  @column()
+  declare guardMax: number | null
+
+  @column()
+  declare photoUrl: string | null
+
+  @column()
+  declare notes: string | null
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -43,6 +56,9 @@ export default class Wine extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 
-  @belongsTo(() => User)
-  declare user: BelongsTo<typeof User>
+  @belongsTo(() => User, { foreignKey: 'merchantId' })
+  declare merchant: BelongsTo<typeof User>
+
+  @hasMany(() => BoxWine)
+  declare boxWines: HasMany<typeof BoxWine>
 }

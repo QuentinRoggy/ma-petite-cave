@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Playfair Display", serif;
+  --font-body: "DM Sans", sans-serif;
+
+  --color-wine: #722F37;
+  --color-wine-dark: #5A252C;
+  --color-wine-deep: #8B1A1A;
+  --color-cream: #FAF7F2;
+  --color-cream-dark: #F0EBE3;
+  --color-charcoal: #1A1A1A;
+  --color-charcoal-light: #2A2A2A;
+  --color-gold: #C9A96E;
+  --color-gold-light: #D4BA85;
+  --color-muted: #6B7280;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-body);
+    color: var(--color-charcoal);
+    background-color: var(--color-cream);
+  }
+
+  ::selection {
+    background-color: var(--color-wine);
+    color: white;
+  }
+}
+
+/* Scroll-triggered animations */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-on-scroll {
+  opacity: 0;
+}
+
+.animate-on-scroll.is-visible {
+  animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-on-scroll.delay-1 { animation-delay: 0.1s; }
+.animate-on-scroll.delay-2 { animation-delay: 0.2s; }
+.animate-on-scroll.delay-3 { animation-delay: 0.3s; }
+.animate-on-scroll.delay-4 { animation-delay: 0.4s; }
+.animate-on-scroll.delay-5 { animation-delay: 0.5s; }

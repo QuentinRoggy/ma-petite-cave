@@ -8,8 +8,7 @@ export default class WinesController {
     const filters = await request.validateUsing(indexWineValidator)
 
     const query = Wine.query()
-      .where('userId', user.id)
-      .where('type', filters.type)
+      .where('merchantId', user.id)
       .orderBy('createdAt', 'desc')
 
     if (filters.query) {
@@ -17,13 +16,10 @@ export default class WinesController {
       query.where((q) => {
         q.whereILike('name', search)
           .orWhereILike('domain', search)
-          .orWhereILike('merchantNotes', search)
-          .orWhereILike('personalNotes', search)
+          .orWhereILike('region', search)
       })
     }
 
-    if (filters.rated === 'true') query.whereNotNull('rating')
-    if (filters.rated === 'false') query.whereNull('rating')
     if (filters.color) query.where('color', filters.color)
 
     const wines = await query
@@ -33,14 +29,14 @@ export default class WinesController {
   async store({ auth, request }: HttpContext) {
     const user = auth.user!
     const payload = await request.validateUsing(createWineValidator)
-    const wine = await Wine.create({ ...payload, userId: user.id })
+    const wine = await Wine.create({ ...payload, merchantId: user.id })
     return { wine }
   }
 
   async show({ auth, params }: HttpContext) {
     const wine = await Wine.query()
       .where('id', params.id)
-      .where('userId', auth.user!.id)
+      .where('merchantId', auth.user!.id)
       .firstOrFail()
     return { wine }
   }
@@ -48,7 +44,7 @@ export default class WinesController {
   async update({ auth, params, request }: HttpContext) {
     const wine = await Wine.query()
       .where('id', params.id)
-      .where('userId', auth.user!.id)
+      .where('merchantId', auth.user!.id)
       .firstOrFail()
     const payload = await request.validateUsing(updateWineValidator)
     wine.merge(payload)
@@ -59,21 +55,23 @@ export default class WinesController {
   async destroy({ auth, params, response }: HttpContext) {
     const wine = await Wine.query()
       .where('id', params.id)
-      .where('userId', auth.user!.id)
+      .where('merchantId', auth.user!.id)
       .firstOrFail()
     await wine.delete()
     return response.noContent()
   }
 
-  async moveToCave({ auth, params }: HttpContext) {
-    const wine = await Wine.query()
-      .where('id', params.id)
-      .where('userId', auth.user!.id)
-      .where('type', 'wishlist')
-      .firstOrFail()
+  async stats({ auth, response }: HttpContext) {
+    const merchant = auth.user!
 
-    wine.type = 'cave'
-    await wine.save()
-    return { wine }
+    const wines = await Wine.query().where('merchantId', merchant.id)
+    const total = wines.length
+    const byColor: Record<string, number> = {}
+    for (const wine of wines) {
+      const color = wine.color || 'non défini'
+      byColor[color] = (byColor[color] || 0) + 1
+    }
+
+    return response.ok({ stats: { total, byColor } })
   }
 }

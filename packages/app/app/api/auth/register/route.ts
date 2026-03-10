@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 const API_URL = process.env.API_URL || 'http://localhost:3333'
 const COOKIE_NAME = process.env.AUTH_COOKIE_NAME || 'mpc_token'
+const ROLE_COOKIE_NAME = 'mpc_role'
 
 export async function POST(req: NextRequest) {
   const body = await req.json()
@@ -19,7 +20,18 @@ export async function POST(req: NextRequest) {
   }
 
   const response = NextResponse.json({ user: data.user })
+
+  // Token cookie (httpOnly pour la sécurité)
   response.cookies.set(COOKIE_NAME, data.token.token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 60 * 60 * 24 * 7,
+  })
+
+  // Role cookie (accessible par le middleware)
+  response.cookies.set(ROLE_COOKIE_NAME, data.user.role, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',

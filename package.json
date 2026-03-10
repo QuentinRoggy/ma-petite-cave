@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"pnpm dev:backend\" \"pnpm dev:frontend\"",
+    "dev": "concurrently \"pnpm dev:backend\" \"pnpm dev:frontend\" \"pnpm dev:web\"",
     "dev:backend": "cd packages/api && pnpm dev",
-    "dev:frontend": "cd packages/app && pnpm dev"
+    "dev:frontend": "cd packages/app && pnpm dev",
+    "dev:web": "cd packages/web && pnpm dev"
   },
   "keywords": [],
   "author": "",
