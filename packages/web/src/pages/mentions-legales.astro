@@ -1,0 +1,99 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_NAME, SITE_URL } from "../config";
+---
+
+<Layout title={`Mentions légales — ${SITE_NAME}`} description="Mentions légales, politique de confidentialité et informations sur les cookies du site Ma Petite Cave.">
+  <Nav />
+  <main id="main-content" class="mx-auto max-w-3xl px-6 pt-32 pb-20">
+    <h1 class="font-display text-3xl font-bold text-charcoal md:text-4xl">
+      Mentions légales
+    </h1>
+
+    <div class="mt-10 space-y-10 text-muted leading-relaxed">
+      <section>
+        <h2 class="mb-4 font-display text-xl font-bold text-charcoal">Éditeur du site</h2>
+        <p>
+          Le site <strong>{SITE_URL}</strong> est édité par :<br />
+          <strong>Quentin Roggy</strong><br />
+          Entreprise individuelle<br />
+          84 rue des Noyers, 49000 Angers<br />
+          SIRET : 947 471 256 00018<br />
+          TVA non applicable (article 293 B du CGI)<br />
+          Directeur de la publication : Quentin Roggy<br />
+          Contact : <a href="mailto:contact@ma-petite-cave.fr" class="text-wine underline">contact@ma-petite-cave.fr</a>
+        </p>
+      </section>
+
+      <section>
+        <h2 class="mb-4 font-display text-xl font-bold text-charcoal">Hébergement</h2>
+        <p>
+          Le site est hébergé par :<br />
+          <strong>Vercel Inc.</strong><br />
+          440 N Barranca Ave #4133, Covina, CA 91723, États-Unis<br />
+          Site web : <a href="https://vercel.com" class="text-wine underline" rel="noopener noreferrer" target="_blank">vercel.com</a>
+        </p>
+      </section>
+
+      <section>
+        <h2 class="mb-4 font-display text-xl font-bold text-charcoal">Propriété intellectuelle</h2>
+        <p>
+          L'ensemble des contenus présents sur le site {SITE_NAME} (textes, images, graphismes, logo, icônes, etc.)
+          est protégé par les lois relatives à la propriété intellectuelle. Toute reproduction, représentation,
+          modification, publication ou adaptation de tout ou partie des éléments du site est interdite sans
+          autorisation écrite préalable.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="mb-4 font-display text-xl font-bold text-charcoal">Données personnelles & RGPD</h2>
+        <p>
+          Conformément au Règlement Général sur la Protection des Données (RGPD) et à la loi Informatique et
+          Libertés, vous disposez d'un droit d'accès, de rectification, de suppression et de portabilité de
+          vos données personnelles.
+        </p>
+        <p class="mt-3">
+          Les données collectées via {SITE_NAME} sont les suivantes :
+        </p>
+        <ul class="mt-3 list-disc space-y-1 pl-6">
+          <li>Données d'identification (nom, prénom, email) lors de la création de compte</li>
+          <li>Données d'utilisation (notes de dégustation, préférences) saisies volontairement</li>
+          <li>Données techniques (adresse IP, navigateur) via les journaux de connexion</li>
+        </ul>
+        <p class="mt-3">
+          Ces données sont traitées dans le seul but de fournir le service {SITE_NAME} et ne sont jamais
+          vendues ni partagées avec des tiers à des fins commerciales.
+        </p>
+        <p class="mt-3">
+          Durée de conservation : vos données sont conservées pendant toute la durée de votre utilisation du
+          service, puis supprimées dans un délai de 12 mois après la clôture de votre compte.
+        </p>
+        <p class="mt-3">
+          Pour exercer vos droits, contactez-nous à :
+          <a href="mailto:contact@ma-petite-cave.fr" class="text-wine underline">contact@ma-petite-cave.fr</a>
+        </p>
+      </section>
+
+      <section>
+        <h2 class="mb-4 font-display text-xl font-bold text-charcoal">Cookies</h2>
+        <p>
+          Le site {SITE_NAME} utilise des cookies strictement nécessaires au fonctionnement du service
+          (authentification, session). Nous utilisons également un outil d'analyse d'audience (Umami)
+          respectueux de la vie privée, qui ne dépose aucun cookie et ne collecte aucune donnée personnelle.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="mb-4 font-display text-xl font-bold text-charcoal">Limitation de responsabilité</h2>
+        <p>
+          {SITE_NAME} s'efforce de fournir des informations aussi précises que possible. Toutefois, il ne pourra
+          être tenu responsable des omissions, inexactitudes ou carences dans la mise à jour des informations.
+          L'utilisateur est seul responsable de l'utilisation qu'il fait des informations et contenus présents sur le site.
+        </p>
+      </section>
+    </div>
+  </main>
+  <Footer />
+</Layout>

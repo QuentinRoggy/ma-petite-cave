@@ -13,13 +13,15 @@ const currentYear = new Date().getFullYear();
           Le CRM pensé pour les cavistes.
         </p>
       </div>
-      <div class="flex gap-6 text-sm text-muted">
+      <div class="flex flex-wrap justify-center gap-6 text-sm text-muted">
         <a href="#comment-ca-marche" class="transition hover:text-wine">Comment ça marche</a>
         <a href="#fonctionnalites" class="transition hover:text-wine">Fonctionnalités</a>
+        <a href="#faq" class="transition hover:text-wine">FAQ</a>
       </div>
     </div>
-    <div class="mt-8 border-t border-charcoal/5 pt-8 text-center text-sm text-muted">
-      &copy; {currentYear} Ma Petite Cave. Tous droits réservés.
+    <div class="mt-8 flex flex-col items-center gap-3 border-t border-charcoal/5 pt-8 text-center text-sm text-muted">
+      <a href="/mentions-legales" class="transition hover:text-wine">Mentions légales</a>
+      <p>&copy; {currentYear} Ma Petite Cave. Tous droits réservés.</p>
     </div>
   </div>
 </footer>
