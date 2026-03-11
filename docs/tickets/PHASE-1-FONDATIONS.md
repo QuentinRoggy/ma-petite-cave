@@ -932,7 +932,7 @@ export function MerchantSidebar({ user }: { user: any }) {
       {/* Logo / Shop name */}
       <div className="flex h-16 items-center px-6 border-b">
         <span className="font-semibold text-lg truncate">
-          {user.merchantProfile?.shopName || 'Cuvée'}
+          {user.merchantProfile?.shopName || 'Ma Petite Cave'}
         </span>
       </div>
 
@@ -1129,7 +1129,7 @@ export function ClientHeader({ user }: { user: any }) {
   return (
     <header className="sticky top-0 z-40 flex h-14 items-center justify-between px-4 border-b bg-background/95 backdrop-blur">
       {/* Logo */}
-      <span className="font-semibold">Cuvée</span>
+      <span className="font-semibold">Ma Petite Cave</span>
 
       {/* Actions */}
       <div className="flex items-center gap-2">

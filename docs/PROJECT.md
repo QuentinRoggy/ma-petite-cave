@@ -1,4 +1,4 @@
-# Cuvée - CRM pour Cavistes
+# Ma Petite Cave - CRM pour Cavistes
 
 > Pivot du projet "Ma Petite Cave" vers un outil B2B2C de gestion de relation caviste-client
 
@@ -31,7 +31,7 @@ Un caviste propose des box mensuelles (2 bouteilles, ~25-30€) à ses clients f
 
 ### La solution
 
-**Cuvée** connecte le caviste et ses clients via une plateforme digitale :
+**Ma Petite Cave** connecte le caviste et ses clients via une plateforme digitale :
 - Le caviste saisit les infos des vins (une fois) et les assigne aux box clients
 - Le client reçoit les fiches détaillées sur son mobile
 - Le client note et commente après dégustation

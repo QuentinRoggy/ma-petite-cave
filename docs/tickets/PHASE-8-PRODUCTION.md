@@ -31,8 +31,8 @@ Configurer les environnements de développement, staging et production.
 | Env | URL API | URL App | Base de données |
 |-----|---------|---------|-----------------|
 | dev | localhost:3333 | localhost:3000 | local |
-| staging | api.staging.cuvee.app | staging.cuvee.app | Neon (staging) |
-| prod | api.cuvee.app | cuvee.app | Neon (prod) |
+| staging | api.staging.ma-petite-cave.fr | staging.ma-petite-cave.fr | Neon (staging) |
+| prod | api.ma-petite-cave.fr | ma-petite-cave.fr | Neon (prod) |
 
 #### Variables d'environnement
 ```bash
@@ -171,8 +171,8 @@ Déployer le frontend Next.js en production.
 
 #### Variables d'environnement Vercel
 ```
-NEXT_PUBLIC_API_URL=https://api.cuvee.app
-API_URL=https://api.cuvee.app
+NEXT_PUBLIC_API_URL=https://api.ma-petite-cave.fr
+API_URL=https://api.ma-petite-cave.fr
 AUTH_COOKIE_NAME=mpc_token
 ```
 

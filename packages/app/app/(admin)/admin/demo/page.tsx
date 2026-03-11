@@ -30,8 +30,8 @@ interface SetupResult {
 
 export default function AdminDemoPage() {
   const [setupConfig, setSetupConfig] = useState({
-    merchantEmail: 'demo-caviste@cuvee.app',
-    clientEmail: 'demo-client@cuvee.app',
+    merchantEmail: 'demo-caviste@ma-petite-cave.fr',
+    clientEmail: 'demo-client@ma-petite-cave.fr',
     merchantName: 'Jean Caviste',
     clientName: 'Marie Cliente',
     shopName: 'Cave du Chateau',

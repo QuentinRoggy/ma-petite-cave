@@ -91,13 +91,13 @@ packages/api/resources/views/emails/
 </head>
 <body>
   <div class="header">
-    <h1>🍷 Cuvée</h1>
+    <h1>🍷 Ma Petite Cave</h1>
   </div>
   <div class="content">
     @!section('content')
   </div>
   <div class="footer">
-    <p>Cuvée - L'app qui connecte les cavistes et leurs clients</p>
+    <p>Ma Petite Cave - L'app qui connecte les cavistes et leurs clients</p>
   </div>
 </body>
 </html>
@@ -170,23 +170,23 @@ packages/app/app/(merchant)/clients/invite/page.tsx
 
 #### Email d'invitation
 ```
-Objet: [Cave du Château] vous invite à rejoindre Cuvée
+Objet: [Cave du Château] vous invite à rejoindre Ma Petite Cave
 
 Bonjour Jean,
 
-Cave du Château vous invite à rejoindre Cuvée pour
+Cave du Château vous invite à rejoindre Ma Petite Cave pour
 recevoir vos fiches de dégustation personnalisées.
 
 [Créer mon compte]
 
 À bientôt,
-L'équipe Cuvée
+L'équipe Ma Petite Cave
 ```
 
 #### Page d'acceptation
 ```
 ┌─────────────────────────────┐
-│ 🍷 Bienvenue sur Cuvée      │
+│ 🍷 Bienvenue sur Ma Petite Cave │
 ├─────────────────────────────┤
 │                             │
 │ Cave du Château vous        │

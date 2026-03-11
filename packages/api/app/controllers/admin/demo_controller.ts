@@ -116,8 +116,8 @@ export default class DemoController {
    */
   async setup({ request, response }: HttpContext) {
     const {
-      merchantEmail = 'demo-caviste@cuvee.app',
-      clientEmail = 'demo-client@cuvee.app',
+      merchantEmail = 'demo-caviste@ma-petite-cave.fr',
+      clientEmail = 'demo-client@ma-petite-cave.fr',
       merchantName = 'Jean Caviste',
       clientName = 'Marie Cliente',
       shopName = 'Cave du Château',
@@ -300,8 +300,8 @@ export default class DemoController {
    */
   async reset({ request, response }: HttpContext) {
     const {
-      merchantEmail = 'demo-caviste@cuvee.app',
-      clientEmail = 'demo-client@cuvee.app',
+      merchantEmail = 'demo-caviste@ma-petite-cave.fr',
+      clientEmail = 'demo-client@ma-petite-cave.fr',
     } = request.body()
 
     let merchantDeleted = false

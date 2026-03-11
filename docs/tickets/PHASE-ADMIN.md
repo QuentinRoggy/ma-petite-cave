@@ -259,16 +259,16 @@ switch (user.role) {
 
 ```typescript
 // Script ou commande ace
-// node ace make:admin admin@cuvee.app password123
+// node ace make:admin admin@ma-petite-cave.fr password123
 
 import User from '#models/user'
 import hash from '@adonisjs/core/services/hash'
 
 const admin = await User.create({
-  email: 'admin@cuvee.app',
+  email: 'admin@ma-petite-cave.fr',
   password: await hash.make('password123'),
   role: 'admin',
-  fullName: 'Admin Cuvée',
+  fullName: 'Admin Ma Petite Cave',
 })
 ```
 
@@ -1056,7 +1056,7 @@ export default class DemoController {
 │ │                                                                     │ │
 │ │ Email caviste                                                       │ │
 │ │ ┌─────────────────────────────────────────────────────────────────┐ │ │
-│ │ │ demo-caviste@cuvee.app                                          │ │ │
+│ │ │ demo-caviste@ma-petite-cave.fr                                          │ │ │
 │ │ └─────────────────────────────────────────────────────────────────┘ │ │
 │ │                                                                     │ │
 │ │ Nom de la cave                                                      │ │
@@ -1066,7 +1066,7 @@ export default class DemoController {
 │ │                                                                     │ │
 │ │ Email client                                                        │ │
 │ │ ┌─────────────────────────────────────────────────────────────────┐ │ │
-│ │ │ demo-client@cuvee.app                                           │ │ │
+│ │ │ demo-client@ma-petite-cave.fr                                           │ │ │
 │ │ └─────────────────────────────────────────────────────────────────┘ │ │
 │ │                                                                     │ │
 │ │ [ 🚀 Créer la démo ]                                                │ │
@@ -1076,8 +1076,8 @@ export default class DemoController {
 │ ┌─────────────────────────────────────────────────────────────────────┐ │
 │ │ Résultat                                                            │ │
 │ │                                                                     │ │
-│ │ ✅ Caviste créé : demo-caviste@cuvee.app / demo1234                │ │
-│ │ ✅ Client créé : demo-client@cuvee.app / demo1234                  │ │
+│ │ ✅ Caviste créé : demo-caviste@ma-petite-cave.fr / demo1234                │ │
+│ │ ✅ Client créé : demo-client@ma-petite-cave.fr / demo1234                  │ │
 │ │ ✅ 6 vins ajoutés au catalogue                                     │ │
 │ │ ✅ 1 box envoyée avec 2 vins                                       │ │
 │ │                                                                     │ │

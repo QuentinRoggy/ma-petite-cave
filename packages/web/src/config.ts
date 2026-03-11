@@ -1,2 +1,2 @@
-export const APP_URL = "https://app.cuvee.fr";
-export const SITE_NAME = "Cuvée";
+export const APP_URL = "https://app.ma-petite-cave.fr";
+export const SITE_NAME = "Ma Petite Cave";

@@ -205,7 +205,7 @@ const handleShare = async () => {
 #### Page publique
 ```
 ┌─────────────────────────────┐
-│ 🍷 Cuvée                    │
+│ 🍷 Ma Petite Cave            │
 ├─────────────────────────────┤
 │                             │
 │ [    Photo du vin    ]      │
@@ -222,7 +222,7 @@ const handleShare = async () => {
 │ fromages affinés            │
 │                             │
 │ ─────────────────────────── │
-│ Partagé via Cuvée           │
+│ Partagé via Ma Petite Cave  │
 │ L'app qui connecte les      │
 │ cavistes et leurs clients   │
 │                             │
@@ -234,7 +234,7 @@ const handleShare = async () => {
 - [ ] Web Share API sur mobile
 - [ ] Fallback copie lien sur desktop
 - [ ] Page publique lisible sans connexion
-- [ ] Branding Cuvée sur la page publique
+- [ ] Branding Ma Petite Cave sur la page publique
 
 ---
 
