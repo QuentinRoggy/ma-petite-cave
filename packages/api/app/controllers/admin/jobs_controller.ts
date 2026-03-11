@@ -21,13 +21,13 @@ export default class JobsController {
           return response.badRequest({ message: 'frequency doit être "daily" ou "weekly"' })
         }
         const { default: FeedbackDigestJob } = await import('#jobs/feedback_digest_job')
-        await queue.dispatch(FeedbackDigestJob, { frequency })
+        await queue.dispatch(FeedbackDigestJob, { frequency: frequency as 'daily' | 'weekly' })
         return response.ok({ message: `Job feedback-digest (${frequency}) dispatché avec succès` })
       }
 
       case 'guard-reminder': {
         const { default: GuardReminderJob } = await import('#jobs/guard_reminder_job')
-        await queue.dispatch(GuardReminderJob, {})
+        await queue.dispatch(GuardReminderJob, undefined as never)
         return response.ok({ message: 'Job guard-reminder dispatché avec succès' })
       }
     }
