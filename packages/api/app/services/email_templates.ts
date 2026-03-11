@@ -131,6 +131,23 @@ export function guardReminderEmail(params: {
   `
 }
 
+export function reorderRequestEmail(params: {
+  clientName: string
+  wineName: string
+  reordersUrl: string
+}): string {
+  return `
+    <p>Bonne nouvelle !</p>
+    <p><strong>${params.clientName}</strong> souhaite re-commander un vin :</p>
+    <div class="card">
+      <p style="font-weight: 600; margin: 0;">${params.wineName}</p>
+    </div>
+    <p style="text-align: center; margin: 32px 0;">
+      <a href="${params.reordersUrl}" class="button">Voir les demandes</a>
+    </p>
+  `
+}
+
 export function inviteAcceptedEmail(params: {
   clientName: string
   clientsUrl: string

@@ -24,13 +24,12 @@ export default class FeedbackDigestJob extends Job {
         ? DateTime.now().minus({ days: 1 })
         : DateTime.now().minus({ weeks: 1 })
 
-    // Trouver les merchants avec des notifications feedback non traitées par email
     const feedbackNotifs = await Notification.query()
       .where('type', 'feedback')
       .where('createdAt', '>=', since.toSQL()!)
+      .whereNull('emailDigestSentAt')
       .preload('user')
 
-    // Grouper par userId (merchant)
     const byMerchant = new Map<number, typeof feedbackNotifs>()
     for (const notif of feedbackNotifs) {
       const existing = byMerchant.get(notif.userId) || []
@@ -41,7 +40,6 @@ export default class FeedbackDigestJob extends Job {
     const mailService = new MailService()
 
     for (const [merchantId, notifs] of byMerchant) {
-      // Vérifier les préférences
       const prefs = await NotificationPreference.findBy('userId', merchantId)
       if (prefs && !prefs.emailFeedback) continue
       if (prefs && prefs.emailFeedbackFrequency !== payload.frequency) continue
@@ -64,6 +62,12 @@ export default class FeedbackDigestJob extends Job {
           merchantName: merchant.merchantProfile?.shopName || merchant.fullName || '',
           feedbacks,
         })
+
+        const now = DateTime.now()
+        for (const notif of notifs) {
+          notif.emailDigestSentAt = now
+          await notif.save()
+        }
       } catch (error) {
         console.error(`Failed to send digest to merchant ${merchantId}:`, error)
       }

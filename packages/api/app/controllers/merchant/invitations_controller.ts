@@ -164,13 +164,19 @@ export default class InvitationsController {
       subscriptionId: subscription.id,
     })
 
-    // Envoyer email au caviste
+    // Envoyer email au caviste si sa préférence l'autorise
     try {
-      const mailService = new MailService()
-      await mailService.sendInviteAccepted({
-        to: subscription.merchant.email,
-        clientName: data.fullName,
-      })
+      const { default: NotificationPreference } = await import('#models/notification_preference')
+      const prefs = await NotificationPreference.findBy('userId', subscription.merchantId)
+      const shouldSendEmail = !prefs || prefs.emailInviteAccepted
+
+      if (shouldSendEmail) {
+        const mailService = new MailService()
+        await mailService.sendInviteAccepted({
+          to: subscription.merchant.email,
+          clientName: data.fullName,
+        })
+      }
     } catch {
       // Ne pas bloquer si l'email échoue
     }

@@ -31,6 +31,7 @@ const AdminStatsController = () => import('#controllers/admin/stats_controller')
 const AdminUsersController = () => import('#controllers/admin/users_controller')
 const AdminSubscriptionsController = () => import('#controllers/admin/subscriptions_controller')
 const AdminDemoController = () => import('#controllers/admin/demo_controller')
+const AdminJobsController = () => import('#controllers/admin/jobs_controller')
 
 // Auth routes
 router
@@ -146,6 +147,9 @@ router
     router.get('subscriptions', [AdminSubscriptionsController, 'index'])
     router.post('subscriptions', [AdminSubscriptionsController, 'store'])
     router.delete('subscriptions/:id', [AdminSubscriptionsController, 'destroy'])
+
+    // Jobs
+    router.post('jobs/:jobType', [AdminJobsController, 'dispatch'])
 
     // Demo tools
     router.post('demo/setup', [AdminDemoController, 'setup'])

@@ -140,10 +140,36 @@ export default class ClientWinesController {
               rating: data.rating!,
               clientWineId: clientWine.id,
             })
+
+            const { default: NotificationPreference } = await import(
+              '#models/notification_preference'
+            )
+            const prefs = await NotificationPreference.findBy('userId', subscription.merchantId)
+            const shouldSendInstant =
+              (!prefs || prefs.emailFeedback) &&
+              prefs?.emailFeedbackFrequency === 'instant'
+
+            if (shouldSendInstant) {
+              const { default: MailService } = await import('#services/mail_service')
+              const merchant = await subscription.related('merchant').query().preload('merchantProfile').firstOrFail()
+              const mailService = new MailService()
+              await mailService.sendFeedbackDigest({
+                to: merchant.email,
+                merchantName: merchant.merchantProfile?.shopName || merchant.fullName || '',
+                feedbacks: [
+                  {
+                    wineName: clientWine.boxWine.wine.name,
+                    clientName: client.fullName || client.email,
+                    rating: data.rating!,
+                    notes: data.personalNotes || null,
+                  },
+                ],
+              })
+            }
           }
         }
       } catch {
-        // Ne pas bloquer si la notif échoue
+        // Ne pas bloquer si la notif/email échoue
       }
     }
 
@@ -181,7 +207,7 @@ export default class ClientWinesController {
     clientWine.reorderRequestedAt = DateTime.now()
     await clientWine.save()
 
-    // Notifier le caviste
+    // Notifier le caviste (in-app + email)
     try {
       await clientWine.load('boxWine', (bwQuery) => bwQuery.preload('wine'))
       const box = await Box.find(clientWine.boxWine.boxId)
@@ -195,10 +221,27 @@ export default class ClientWinesController {
             wineName: clientWine.boxWine.wine.name,
             clientWineId: clientWine.id,
           })
+
+          const { default: NotificationPreference } = await import(
+            '#models/notification_preference'
+          )
+          const prefs = await NotificationPreference.findBy('userId', subscription.merchantId)
+          const shouldSendEmail = !prefs || prefs.emailReorder
+
+          if (shouldSendEmail) {
+            const { default: MailService } = await import('#services/mail_service')
+            const merchant = await subscription.related('merchant').query().firstOrFail()
+            const mailService = new MailService()
+            await mailService.sendReorderRequest({
+              to: merchant.email,
+              clientName: client.fullName || client.email,
+              wineName: clientWine.boxWine.wine.name,
+            })
+          }
         }
       }
     } catch {
-      // Ne pas bloquer si la notif échoue
+      // Ne pas bloquer si la notif/email échoue
     }
 
     return response.ok({

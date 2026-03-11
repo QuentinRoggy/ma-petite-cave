@@ -29,6 +29,9 @@ export default class Notification extends BaseModel {
   @column.dateTime()
   declare readAt: DateTime | null
 
+  @column.dateTime()
+  declare emailDigestSentAt: DateTime | null
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

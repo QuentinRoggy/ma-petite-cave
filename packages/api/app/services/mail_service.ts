@@ -1,6 +1,6 @@
 import mail from '@adonisjs/mail/services/main'
 import env from '#start/env'
-import { emailLayout, invitationEmail, feedbackDigestEmail, guardReminderEmail, inviteAcceptedEmail } from './email_templates.js'
+import { emailLayout, invitationEmail, feedbackDigestEmail, guardReminderEmail, reorderRequestEmail, inviteAcceptedEmail } from './email_templates.js'
 
 export default class MailService {
   private from = env.get('MAIL_FROM')
@@ -86,6 +86,28 @@ export default class MailService {
             ? `Un vin est prêt à déguster !`
             : `${params.wines.length} vins sont prêts à déguster !`
         )
+        .html(html)
+    })
+  }
+
+  async sendReorderRequest(params: {
+    to: string
+    clientName: string
+    wineName: string
+  }) {
+    const html = emailLayout(
+      reorderRequestEmail({
+        clientName: params.clientName,
+        wineName: params.wineName,
+        reordersUrl: `${this.appUrl}/reorders`,
+      })
+    )
+
+    await mail.send((message) => {
+      message
+        .from(this.from, 'Cuvee')
+        .to(params.to)
+        .subject(`${params.clientName} souhaite re-commander un vin`)
         .html(html)
     })
   }
