@@ -41,7 +41,7 @@ function LoginForm() {
       const data = await res.json()
 
       if (!res.ok) {
-        setError(data.errors?.[0]?.message || data.message || 'Identifiants invalides')
+        setError(data.errors?.[0]?.message || 'Identifiants invalides')
         return
       }
 
