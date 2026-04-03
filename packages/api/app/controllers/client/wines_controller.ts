@@ -2,25 +2,35 @@ import type { HttpContext } from '@adonisjs/core/http'
 import { DateTime } from 'luxon'
 import Box from '#models/box'
 import ClientWine from '#models/client_wine'
+import Wine from '#models/wine'
 import Subscription from '#models/subscription'
-import { updateClientWineValidator } from '#validators/client_wine'
+import {
+  updateClientWineValidator,
+  createPersonalWineValidator,
+  updatePersonalWineValidator,
+} from '#validators/client_wine'
 
 export default class ClientWinesController {
   /**
-   * Liste tous les vins du client
+   * Liste tous les vins du client (box + personnels)
    * GET /client/wines
    */
   async index({ auth, request, response }: HttpContext) {
     const client = auth.user!
-    const { status, rated, page = 1, limit = 20 } = request.qs()
+    const { status, rated, source, page = 1, limit = 20 } = request.qs()
 
     let query = ClientWine.query()
       .where('clientId', client.id)
       .preload('boxWine', (bwQuery) => bwQuery.preload('wine').preload('box'))
+      .preload('wine')
       .orderBy('createdAt', 'desc')
 
     if (status) {
       query = query.where('status', status)
+    }
+
+    if (source === 'box' || source === 'personal') {
+      query = query.where('source', source)
     }
 
     if (rated === 'true') {
@@ -32,24 +42,34 @@ export default class ClientWinesController {
     const wines = await query.paginate(page, limit)
 
     return response.ok({
-      wines: wines.all().map((cw) => ({
-        id: cw.id,
-        status: cw.status,
-        rating: cw.rating,
-        personalNotes: cw.personalNotes,
-        openedAt: cw.openedAt,
-        finishedAt: cw.finishedAt,
-        wantsReorder: cw.wantsReorder,
-        wine: {
-          id: cw.boxWine.wine.id,
-          name: cw.boxWine.wine.name,
-          domain: cw.boxWine.wine.domain,
-          vintage: cw.boxWine.wine.vintage,
-          color: cw.boxWine.wine.color,
-          photoUrl: cw.boxWine.wine.photoUrl,
-        },
-        boxMonth: cw.boxWine.box.month,
-      })),
+      wines: wines.all().map((cw) => {
+        const wineData =
+          cw.source === 'personal'
+            ? cw.wine
+            : cw.boxWine?.wine
+
+        return {
+          id: cw.id,
+          status: cw.status,
+          rating: cw.rating,
+          personalNotes: cw.personalNotes,
+          openedAt: cw.openedAt,
+          finishedAt: cw.finishedAt,
+          wantsReorder: cw.wantsReorder,
+          source: cw.source,
+          wine: wineData
+            ? {
+                id: wineData.id,
+                name: wineData.name,
+                domain: wineData.domain,
+                vintage: wineData.vintage,
+                color: wineData.color,
+                photoUrl: wineData.photoUrl,
+              }
+            : null,
+          boxMonth: cw.source === 'box' ? cw.boxWine?.box?.month : null,
+        }
+      }),
       meta: wines.getMeta(),
     })
   }
@@ -71,7 +91,29 @@ export default class ClientWinesController {
           )
         )
       )
+      .preload('wine')
       .firstOrFail()
+
+    if (clientWine.source === 'personal') {
+      return response.ok({
+        clientWine: {
+          id: clientWine.id,
+          status: clientWine.status,
+          rating: clientWine.rating,
+          personalNotes: clientWine.personalNotes,
+          openedAt: clientWine.openedAt,
+          finishedAt: clientWine.finishedAt,
+          wantsReorder: false,
+          reorderRequestedAt: null,
+          createdAt: clientWine.createdAt,
+          source: 'personal',
+          merchantNotes: null,
+          wine: clientWine.wine,
+          box: null,
+          merchant: null,
+        },
+      })
+    }
 
     return response.ok({
       clientWine: {
@@ -84,6 +126,7 @@ export default class ClientWinesController {
         wantsReorder: clientWine.wantsReorder,
         reorderRequestedAt: clientWine.reorderRequestedAt,
         createdAt: clientWine.createdAt,
+        source: 'box',
         merchantNotes: clientWine.boxWine.merchantNotes,
         wine: clientWine.boxWine.wine,
         box: {
@@ -99,19 +142,100 @@ export default class ClientWinesController {
   }
 
   /**
-   * Modifier un vin (statut, rating, notes)
+   * Ajouter un vin personnel à la cave
+   * POST /client/wines
+   */
+  async store({ auth, request, response }: HttpContext) {
+    const client = auth.user!
+    const data = await request.validateUsing(createPersonalWineValidator)
+
+    const { status: wineStatus, rating, personalNotes, ...wineData } = data
+
+    const wine = await Wine.create({
+      ...wineData,
+      merchantId: null,
+    })
+
+    const clientWine = await ClientWine.create({
+      wineId: wine.id,
+      clientId: client.id,
+      source: 'personal',
+      status: wineStatus || 'in_cellar',
+      rating: rating || null,
+      personalNotes: personalNotes || null,
+    })
+
+    return response.created({
+      clientWine: {
+        id: clientWine.id,
+        status: clientWine.status,
+        source: 'personal',
+        wine: {
+          id: wine.id,
+          name: wine.name,
+          domain: wine.domain,
+          vintage: wine.vintage,
+          color: wine.color,
+          photoUrl: wine.photoUrl,
+        },
+      },
+    })
+  }
+
+  /**
+   * Modifier un vin (statut, rating, notes + détails du vin si personnel)
    * PATCH /client/wines/:id
    */
   async update({ auth, params, request, response }: HttpContext) {
     const client = auth.user!
-    const data = await request.validateUsing(updateClientWineValidator)
 
     const clientWine = await ClientWine.query()
       .where('id', params.id)
       .where('clientId', client.id)
       .preload('boxWine', (bwQuery) => bwQuery.preload('wine'))
+      .preload('wine')
       .firstOrFail()
 
+    if (clientWine.source === 'personal') {
+      const data = await request.validateUsing(updatePersonalWineValidator)
+      const { status: wineStatus, rating, personalNotes, ...wineData } = data
+
+      if (Object.keys(wineData).length > 0 && clientWine.wine) {
+        clientWine.wine.merge(wineData)
+        await clientWine.wine.save()
+      }
+
+      const clientWineUpdate: Partial<typeof clientWine> = {}
+      if (wineStatus !== undefined) {
+        if (wineStatus === 'opened' && clientWine.status === 'in_cellar') {
+          clientWine.openedAt = DateTime.now()
+        }
+        if (wineStatus === 'finished' && clientWine.status !== 'finished') {
+          clientWine.finishedAt = DateTime.now()
+        }
+        clientWineUpdate.status = wineStatus
+      }
+      if (rating !== undefined) clientWineUpdate.rating = rating
+      if (personalNotes !== undefined) clientWineUpdate.personalNotes = personalNotes
+
+      clientWine.merge(clientWineUpdate)
+      await clientWine.save()
+
+      return response.ok({
+        clientWine: {
+          id: clientWine.id,
+          status: clientWine.status,
+          rating: clientWine.rating,
+          personalNotes: clientWine.personalNotes,
+          openedAt: clientWine.openedAt,
+          finishedAt: clientWine.finishedAt,
+          source: 'personal',
+          wine: clientWine.wine,
+        },
+      })
+    }
+
+    const data = await request.validateUsing(updateClientWineValidator)
     const hadRating = clientWine.rating !== null
     const newRating = data.rating !== undefined && data.rating !== null
 
@@ -125,7 +249,6 @@ export default class ClientWinesController {
     clientWine.merge(data)
     await clientWine.save()
 
-    // Créer une notification pour le caviste si nouvelle note
     if (!hadRating && newRating) {
       try {
         const box = await Box.find(clientWine.boxWine.boxId)
@@ -151,7 +274,11 @@ export default class ClientWinesController {
 
             if (shouldSendInstant) {
               const { default: MailService } = await import('#services/mail_service')
-              const merchant = await subscription.related('merchant').query().preload('merchantProfile').firstOrFail()
+              const merchant = await subscription
+                .related('merchant')
+                .query()
+                .preload('merchantProfile')
+                .firstOrFail()
               const mailService = new MailService()
               await mailService.sendFeedbackDigest({
                 to: merchant.email,
@@ -186,7 +313,38 @@ export default class ClientWinesController {
   }
 
   /**
-   * Demander une re-commande
+   * Supprimer un vin personnel
+   * DELETE /client/wines/:id
+   */
+  async destroy({ auth, params, response }: HttpContext) {
+    const client = auth.user!
+
+    const clientWine = await ClientWine.query()
+      .where('id', params.id)
+      .where('clientId', client.id)
+      .firstOrFail()
+
+    if (clientWine.source !== 'personal') {
+      return response.forbidden({
+        message: 'Seuls les vins personnels peuvent être supprimés',
+      })
+    }
+
+    const wineId = clientWine.wineId
+    await clientWine.delete()
+
+    if (wineId) {
+      const wine = await Wine.find(wineId)
+      if (wine) {
+        await wine.delete()
+      }
+    }
+
+    return response.ok({ message: 'Vin supprimé' })
+  }
+
+  /**
+   * Demander une re-commande (uniquement pour les vins de box)
    * POST /client/wines/:id/reorder
    */
   async reorder({ auth, params, response }: HttpContext) {
@@ -196,6 +354,12 @@ export default class ClientWinesController {
       .where('id', params.id)
       .where('clientId', client.id)
       .firstOrFail()
+
+    if (clientWine.source === 'personal') {
+      return response.badRequest({
+        message: 'La re-commande n\'est pas disponible pour les vins personnels',
+      })
+    }
 
     if (clientWine.wantsReorder) {
       return response.badRequest({
@@ -207,7 +371,6 @@ export default class ClientWinesController {
     clientWine.reorderRequestedAt = DateTime.now()
     await clientWine.save()
 
-    // Notifier le caviste (in-app + email)
     try {
       await clientWine.load('boxWine', (bwQuery) => bwQuery.preload('wine'))
       const box = await Box.find(clientWine.boxWine.boxId)

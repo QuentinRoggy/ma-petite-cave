@@ -107,8 +107,10 @@ router
 
     // Wines (cave)
     router.get('wines', [ClientWinesController, 'index'])
+    router.post('wines', [ClientWinesController, 'store'])
     router.get('wines/:id', [ClientWinesController, 'show'])
     router.patch('wines/:id', [ClientWinesController, 'update'])
+    router.delete('wines/:id', [ClientWinesController, 'destroy'])
     router.post('wines/:id/reorder', [ClientWinesController, 'reorder'])
 
     // Preferences

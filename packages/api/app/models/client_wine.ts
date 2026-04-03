@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 import { BaseModel, column, belongsTo } from '@adonisjs/lucid/orm'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import BoxWine from '#models/box_wine'
+import Wine from '#models/wine'
 import User from '#models/user'
 
 export default class ClientWine extends BaseModel {
@@ -9,10 +10,16 @@ export default class ClientWine extends BaseModel {
   declare id: number
 
   @column()
-  declare boxWineId: number
+  declare boxWineId: number | null
+
+  @column()
+  declare wineId: string | null
 
   @column()
   declare clientId: number
+
+  @column()
+  declare source: 'box' | 'personal'
 
   @column()
   declare status: 'in_cellar' | 'opened' | 'finished'
@@ -46,6 +53,9 @@ export default class ClientWine extends BaseModel {
 
   @belongsTo(() => BoxWine)
   declare boxWine: BelongsTo<typeof BoxWine>
+
+  @belongsTo(() => Wine)
+  declare wine: BelongsTo<typeof Wine>
 
   @belongsTo(() => User, { foreignKey: 'clientId' })
   declare client: BelongsTo<typeof User>

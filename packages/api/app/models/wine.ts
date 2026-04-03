@@ -9,7 +9,7 @@ export default class Wine extends BaseModel {
   declare id: string
 
   @column()
-  declare merchantId: number
+  declare merchantId: number | null
 
   @column()
   declare name: string

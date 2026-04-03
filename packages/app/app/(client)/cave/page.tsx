@@ -1,7 +1,8 @@
 import { cookies } from 'next/headers'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Wine as WineIcon } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Wine as WineIcon, Plus } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -12,6 +13,7 @@ type ClientWine = {
   id: number
   status: 'in_cellar' | 'opened' | 'finished'
   rating: number | null
+  source: 'box' | 'personal'
   wine: {
     id: string
     name: string
@@ -20,7 +22,7 @@ type ClientWine = {
     color: string | null
     photoUrl: string | null
   }
-  boxMonth: string
+  boxMonth: string | null
 }
 
 async function getWines(): Promise<ClientWine[]> {
@@ -72,7 +74,15 @@ export default async function CavePage() {
 
   return (
     <div className="p-4 space-y-6">
-      <h1 className="text-xl font-bold">Ma cave</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-xl font-bold">Ma cave</h1>
+        <Button asChild size="sm">
+          <Link href="/cave/new">
+            <Plus className="h-4 w-4 mr-1" />
+            Ajouter un vin
+          </Link>
+        </Button>
+      </div>
 
       {wines.length === 0 ? (
         <Card>
@@ -80,8 +90,14 @@ export default async function CavePage() {
             <WineIcon className="h-12 w-12 text-muted-foreground mb-4" />
             <h3 className="text-lg font-semibold mb-2">Cave vide</h3>
             <p className="text-sm text-muted-foreground text-center max-w-sm">
-              Les vins de vos box apparaîtront ici.
+              Les vins de vos box apparaîtront ici, ou ajoutez vos propres bouteilles.
             </p>
+            <Button asChild className="mt-4" size="sm">
+              <Link href="/cave/new">
+                <Plus className="h-4 w-4 mr-1" />
+                Ajouter mon premier vin
+              </Link>
+            </Button>
           </CardContent>
         </Card>
       ) : (
@@ -176,6 +192,11 @@ function WineCard({ wine }: { wine: ClientWine }) {
               )}
             </div>
             <div className="flex gap-1 mt-1 flex-wrap">
+              {wine.source === 'personal' && (
+                <Badge variant="secondary" className="text-xs">
+                  Personnel
+                </Badge>
+              )}
               {wine.wine.vintage && (
                 <Badge variant="outline" className="text-xs">
                   {wine.wine.vintage}
