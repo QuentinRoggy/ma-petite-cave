@@ -56,7 +56,7 @@ export default async function ClientBoxesPage() {
   const boxes = await getBoxes()
 
   return (
-    <div className="p-4 space-y-4">
+    <div className="p-4 md:p-6 space-y-4">
       <h1 className="text-xl font-bold">Mes box</h1>
 
       {boxes.length === 0 ? (
@@ -70,7 +70,7 @@ export default async function ClientBoxesPage() {
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-4">
+        <div className="grid gap-4 md:grid-cols-2">
           {boxes.map((box) => {
             const allRated = box.ratedWines === box.totalWines && box.totalWines > 0
 

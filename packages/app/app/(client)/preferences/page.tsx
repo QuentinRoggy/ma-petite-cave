@@ -111,7 +111,7 @@ export default function PreferencesPage() {
   }
 
   return (
-    <div className="p-4 space-y-6 pb-24">
+    <div className="p-4 md:p-6 space-y-6 pb-24">
       <div>
         <h1 className="text-2xl font-bold">Mes préférences</h1>
         <p className="text-muted-foreground">
@@ -375,7 +375,7 @@ export default function PreferencesPage() {
       </Card>
 
       {/* Save button - fixed */}
-      <div className="fixed bottom-20 left-0 right-0 p-4 bg-background/95 backdrop-blur border-t">
+      <div className="fixed bottom-20 md:bottom-0 left-0 right-0 p-4 bg-background/95 backdrop-blur border-t">
         <Button className="w-full" size="lg" onClick={handleSave} disabled={saving}>
           {saving ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />

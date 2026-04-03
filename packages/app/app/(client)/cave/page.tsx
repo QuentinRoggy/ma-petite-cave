@@ -73,7 +73,7 @@ export default async function CavePage() {
   const finished = wines.filter((w) => w.status === 'finished')
 
   return (
-    <div className="p-4 space-y-6">
+    <div className="p-4 md:p-6 space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold">Ma cave</h1>
         <Button asChild size="sm">
@@ -111,7 +111,7 @@ export default async function CavePage() {
                   ({inCellar.length})
                 </span>
               </h2>
-              <div className="grid gap-3">
+              <div className="grid gap-3 sm:grid-cols-2">
                 {inCellar.map((wine) => (
                   <WineCard key={wine.id} wine={wine} />
                 ))}
@@ -128,7 +128,7 @@ export default async function CavePage() {
                   ({opened.length})
                 </span>
               </h2>
-              <div className="grid gap-3">
+              <div className="grid gap-3 sm:grid-cols-2">
                 {opened.map((wine) => (
                   <WineCard key={wine.id} wine={wine} />
                 ))}
@@ -145,7 +145,7 @@ export default async function CavePage() {
                   ({finished.length})
                 </span>
               </h2>
-              <div className="grid gap-3">
+              <div className="grid gap-3 sm:grid-cols-2">
                 {finished.map((wine) => (
                   <WineCard key={wine.id} wine={wine} />
                 ))}
