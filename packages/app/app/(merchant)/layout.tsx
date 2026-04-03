@@ -91,7 +91,7 @@ export default function MerchantLayout({
         <div className="flex flex-col h-full">
           {/* Logo */}
           <div className="flex h-16 items-center justify-between px-6 border-b">
-            <span className="font-semibold text-lg">Cuvee</span>
+            <span className="font-semibold text-lg">Ma petite Cave</span>
             <Button
               variant="ghost"
               size="icon"
@@ -164,7 +164,7 @@ export default function MerchantLayout({
           >
             <Menu className="h-5 w-5" />
           </Button>
-          <span className="font-semibold">Cuvee</span>
+          <span className="font-semibold">Ma petite Cave</span>
         </header>
 
         {/* Page content */}

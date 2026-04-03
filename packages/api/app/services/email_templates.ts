@@ -26,14 +26,14 @@ export function emailLayout(content: string): string {
 <body>
   <div class="wrapper">
     <div class="header">
-      <h1>Cuvee</h1>
+      <h1>Ma petite Cave</h1>
     </div>
     <div class="content">
       ${content}
     </div>
     <div class="footer">
-      <p>Cuvee — L'app qui connecte les cavistes et leurs clients</p>
-      <p>Vous recevez cet email car vous utilisez Cuvee.</p>
+      <p>Ma petite Cave — L'app qui connecte les cavistes et leurs clients</p>
+      <p>Vous recevez cet email car vous utilisez Ma petite Cave.</p>
     </div>
   </div>
 </body>
@@ -47,8 +47,8 @@ export function invitationEmail(params: {
 }): string {
   return `
     <p>Bonjour ${params.firstName},</p>
-    <p><strong>${params.shopName}</strong> vous invite à rejoindre Cuvee pour recevoir vos fiches de dégustation personnalisées.</p>
-    <p>Avec Cuvee, vous pourrez :</p>
+    <p><strong>${params.shopName}</strong> vous invite à rejoindre Ma petite Cave pour recevoir vos fiches de dégustation personnalisées.</p>
+    <p>Avec Ma petite Cave, vous pourrez :</p>
     <ul style="color: #27272a; line-height: 1.8;">
       <li>Retrouver tous les vins de vos box</li>
       <li>Noter et commenter chaque bouteille</li>
@@ -166,7 +166,7 @@ export function inviteAcceptedEmail(params: {
 }): string {
   return `
     <p>Bonne nouvelle !</p>
-    <p><strong>${params.clientName}</strong> a accepté votre invitation et a rejoint Cuvee.</p>
+    <p><strong>${params.clientName}</strong> a accepté votre invitation et a rejoint Ma petite Cave.</p>
     <p>Vous pouvez dès maintenant lui envoyer sa première box de vins.</p>
     <p style="text-align: center; margin: 32px 0;">
       <a href="${params.clientsUrl}" class="button">Voir mes clients</a>

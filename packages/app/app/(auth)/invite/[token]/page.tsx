@@ -111,9 +111,9 @@ export default function AcceptInvitePage() {
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
             <Wine className="h-8 w-8 text-primary" />
           </div>
-          <CardTitle className="text-2xl">Bienvenue sur Cuvee</CardTitle>
+          <CardTitle className="text-2xl">Bienvenue sur Ma petite Cave</CardTitle>
           <CardDescription>
-            <strong>{invitation?.shopName}</strong> vous invite à rejoindre Cuvee
+            <strong>{invitation?.shopName}</strong> vous invite à rejoindre Ma petite Cave
           </CardDescription>
         </CardHeader>
         <CardContent>

@@ -74,7 +74,7 @@ export default async function PublicWinePage({
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="sticky top-0 z-40 flex h-14 items-center justify-center px-4 border-b bg-background/95 backdrop-blur">
-        <span className="font-semibold">Cuvee</span>
+        <span className="font-semibold">Ma petite Cave</span>
       </header>
 
       {/* Photo */}
@@ -202,10 +202,10 @@ export default async function PublicWinePage({
         {/* CTA */}
         <div className="text-center py-4">
           <p className="text-sm text-muted-foreground mb-2">
-            Partagé via Cuvee
+            Partagé via Ma petite Cave
           </p>
           <Link href="/register" className="text-primary hover:underline text-sm">
-            Découvrir Cuvee
+            Découvrir Ma petite Cave
           </Link>
         </div>
       </div>

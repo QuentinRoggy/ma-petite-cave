@@ -58,7 +58,7 @@ function LoginForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl">Cuvee</CardTitle>
+        <CardTitle className="text-2xl">Ma petite Cave</CardTitle>
         <CardDescription>Connectez-vous à votre espace</CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">

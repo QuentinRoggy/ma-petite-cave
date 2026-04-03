@@ -23,9 +23,9 @@ export default class MailService {
 
     await mail.send((message) => {
       message
-        .from(this.from, 'Cuvee')
+        .from(this.from, 'Ma petite Cave')
         .to(params.to)
-        .subject(`${params.shopName} vous invite à rejoindre Cuvee`)
+        .subject(`${params.shopName} vous invite à rejoindre Ma petite Cave`)
         .html(html)
     })
   }
@@ -50,7 +50,7 @@ export default class MailService {
 
     await mail.send((message) => {
       message
-        .from(this.from, 'Cuvee')
+        .from(this.from, 'Ma petite Cave')
         .to(params.to)
         .subject(`${params.feedbacks.length} nouvel${params.feedbacks.length > 1 ? 's' : ''} avis sur vos vins`)
         .html(html)
@@ -79,7 +79,7 @@ export default class MailService {
 
     await mail.send((message) => {
       message
-        .from(this.from, 'Cuvee')
+        .from(this.from, 'Ma petite Cave')
         .to(params.to)
         .subject(
           params.wines.length === 1
@@ -105,7 +105,7 @@ export default class MailService {
 
     await mail.send((message) => {
       message
-        .from(this.from, 'Cuvee')
+        .from(this.from, 'Ma petite Cave')
         .to(params.to)
         .subject(`${params.clientName} souhaite re-commander un vin`)
         .html(html)
@@ -118,7 +118,7 @@ export default class MailService {
 
     await mail.send((message) => {
       message
-        .from(this.from, 'Cuvee')
+        .from(this.from, 'Ma petite Cave')
         .to(params.to)
         .subject('Réinitialisation de votre mot de passe')
         .html(html)
@@ -138,9 +138,9 @@ export default class MailService {
 
     await mail.send((message) => {
       message
-        .from(this.from, 'Cuvee')
+        .from(this.from, 'Ma petite Cave')
         .to(params.to)
-        .subject(`${params.clientName} a rejoint Cuvee !`)
+        .subject(`${params.clientName} a rejoint Ma petite Cave !`)
         .html(html)
     })
   }

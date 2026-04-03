@@ -58,7 +58,7 @@ export default class NotificationService {
     return this.create({
       userId: params.merchantId,
       type: 'invite_accepted',
-      title: `${params.clientName} a rejoint Cuvee !`,
+      title: `${params.clientName} a rejoint Ma petite Cave !`,
       body: 'Vous pouvez lui envoyer sa première box.',
       data: { subscriptionId: params.subscriptionId },
     })

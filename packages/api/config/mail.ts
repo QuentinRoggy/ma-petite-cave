@@ -21,7 +21,7 @@ const mailConfig = defineConfig({
 
   from: {
     address: env.get('MAIL_FROM'),
-    name: 'Cuvee',
+    name: 'Ma petite Cave',
   },
 })
 

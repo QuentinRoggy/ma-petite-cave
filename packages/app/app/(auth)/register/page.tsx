@@ -70,7 +70,7 @@ export default function RegisterPage() {
     <Card>
       <CardHeader>
         <CardTitle className="text-2xl">Créer un compte</CardTitle>
-        <CardDescription>Rejoignez Cuvee</CardDescription>
+        <CardDescription>Rejoignez Ma petite Cave</CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent className="flex flex-col gap-4">

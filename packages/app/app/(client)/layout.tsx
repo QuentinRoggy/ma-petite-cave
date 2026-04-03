@@ -30,7 +30,7 @@ export default function ClientLayout({
     <div className="flex flex-col min-h-screen bg-background">
       {/* Header */}
       <header className="sticky top-0 z-40 flex h-14 items-center justify-between px-4 border-b bg-background/95 backdrop-blur">
-        <span className="font-semibold">Cuvee</span>
+        <span className="font-semibold">Ma petite Cave</span>
         <div className="flex items-center gap-2">
           <Link href="/settings">
             <Button variant="ghost" size="icon">
