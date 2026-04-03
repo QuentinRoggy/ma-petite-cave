@@ -48,6 +48,12 @@ export default class User extends compose(BaseModel, AuthFinder) {
     restrictions?: string[]
   }
 
+  @column()
+  declare passwordResetToken: string | null
+
+  @column.dateTime()
+  declare passwordResetExpiresAt: DateTime | null
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

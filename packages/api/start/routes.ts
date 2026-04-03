@@ -24,6 +24,7 @@ const PublicWinesController = () => import('#controllers/public_wines_controller
 const UploadsController = () => import('#controllers/uploads_controller')
 
 const InvitationsController = () => import('#controllers/merchant/invitations_controller')
+const PasswordResetController = () => import('#controllers/password_reset_controller')
 const NotificationsController = () => import('#controllers/notifications_controller')
 
 // Admin controllers
@@ -47,6 +48,10 @@ router.get('me', [AuthController, 'me']).use(middleware.auth())
 // Invitation routes (public - no auth)
 router.get('auth/invite/:token', [InvitationsController, 'verify'])
 router.post('auth/invite/:token/accept', [InvitationsController, 'accept'])
+
+// Password reset routes (public - no auth)
+router.post('auth/forgot-password', [PasswordResetController, 'requestReset'])
+router.post('auth/reset-password', [PasswordResetController, 'resetPassword'])
 
 // Merchant routes (requires merchant role)
 router

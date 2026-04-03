@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, Suspense } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -15,8 +15,10 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const passwordReset = searchParams.get('reset') === '1'
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -59,11 +61,14 @@ export default function LoginPage() {
         <CardTitle className="text-2xl">Cuvee</CardTitle>
         <CardDescription>Connectez-vous à votre espace</CardDescription>
       </CardHeader>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <CardContent className="flex flex-col gap-4">
-          {error && (
-            <p className="text-destructive text-sm">{error}</p>
+          {passwordReset && (
+            <p className="text-sm text-green-600">
+              Mot de passe mis à jour. Vous pouvez vous connecter.
+            </p>
           )}
+          {error && <p className="text-destructive text-sm">{error}</p>}
           <div className="flex flex-col gap-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -75,7 +80,12 @@ export default function LoginPage() {
             />
           </div>
           <div className="flex flex-col gap-2">
-            <Label htmlFor="password">Mot de passe</Label>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="password">Mot de passe</Label>
+              <Link href="/forgot-password" className="text-xs text-muted-foreground underline">
+                Mot de passe oublié ?
+              </Link>
+            </div>
             <Input
               id="password"
               name="password"
@@ -98,5 +108,13 @@ export default function LoginPage() {
         </CardFooter>
       </form>
     </Card>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   )
 }

@@ -89,7 +89,7 @@ export default async function DashboardPage() {
 
       {/* Reorders alert */}
       {reorderCount > 0 && (
-        <Link href="/reorders">
+        <Link href="/reorders" className="block mb-2">
           <Card className="border-orange-200 bg-orange-50 hover:bg-orange-100 transition-colors cursor-pointer">
             <CardContent className="p-4 flex items-center justify-between">
               <div className="flex items-center gap-3">

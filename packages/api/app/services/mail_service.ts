@@ -1,6 +1,6 @@
 import mail from '@adonisjs/mail/services/main'
 import env from '#start/env'
-import { emailLayout, invitationEmail, feedbackDigestEmail, guardReminderEmail, reorderRequestEmail, inviteAcceptedEmail } from './email_templates.js'
+import { emailLayout, invitationEmail, feedbackDigestEmail, guardReminderEmail, reorderRequestEmail, inviteAcceptedEmail, passwordResetEmail } from './email_templates.js'
 
 export default class MailService {
   private from = env.get('MAIL_FROM')
@@ -108,6 +108,19 @@ export default class MailService {
         .from(this.from, 'Cuvee')
         .to(params.to)
         .subject(`${params.clientName} souhaite re-commander un vin`)
+        .html(html)
+    })
+  }
+
+  async sendPasswordReset(params: { to: string; resetToken: string }) {
+    const resetUrl = `${this.appUrl}/reset-password?token=${params.resetToken}`
+    const html = emailLayout(passwordResetEmail({ resetUrl }))
+
+    await mail.send((message) => {
+      message
+        .from(this.from, 'Cuvee')
+        .to(params.to)
+        .subject('Réinitialisation de votre mot de passe')
         .html(html)
     })
   }

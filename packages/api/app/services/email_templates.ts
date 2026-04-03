@@ -148,6 +148,18 @@ export function reorderRequestEmail(params: {
   `
 }
 
+export function passwordResetEmail(params: { resetUrl: string }): string {
+  return `
+    <p>Bonjour,</p>
+    <p>Vous avez demandé la réinitialisation de votre mot de passe.</p>
+    <p>Cliquez sur le bouton ci-dessous pour choisir un nouveau mot de passe. Ce lien est valable <strong>1 heure</strong>.</p>
+    <p style="text-align: center; margin: 32px 0;">
+      <a href="${params.resetUrl}" class="button">Réinitialiser mon mot de passe</a>
+    </p>
+    <p style="color: #71717a; font-size: 13px;">Si vous n'êtes pas à l'origine de cette demande, ignorez cet email. Votre mot de passe restera inchangé.</p>
+  `
+}
+
 export function inviteAcceptedEmail(params: {
   clientName: string
   clientsUrl: string

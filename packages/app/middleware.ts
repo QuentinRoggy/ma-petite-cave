@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server'
 
 const COOKIE_NAME = 'mpc_token'
 const ROLE_COOKIE_NAME = 'mpc_role'
-const PUBLIC_PATHS = ['/login', '/register', '/api/auth', '/invite', '/wine']
+const PUBLIC_PATHS = ['/login', '/register', '/api/auth', '/invite', '/wine', '/forgot-password', '/reset-password']
 
 // Routes réservées aux merchants
 const MERCHANT_PATHS = ['/dashboard', '/clients', '/wines', '/shipments', '/feedback', '/reorders', '/stats', '/notifications']
