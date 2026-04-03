@@ -84,7 +84,7 @@ function ResetPasswordForm() {
         <CardTitle className="text-2xl">Nouveau mot de passe</CardTitle>
         <CardDescription>Choisissez un mot de passe d'au moins 8 caractères</CardDescription>
       </CardHeader>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <CardContent className="flex flex-col gap-4">
           {error && (
             <div className="text-destructive text-sm">
