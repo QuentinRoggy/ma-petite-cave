@@ -8,7 +8,7 @@ import vine from '@vinejs/vine'
 
 const inviteValidator = vine.compile(
   vine.object({
-    email: vine.string().email().normalizeEmail(),
+    email: vine.string().email(),
     firstName: vine.string().maxLength(100),
     notes: vine.string().maxLength(500).optional(),
   })
@@ -115,7 +115,7 @@ export default class InvitationsController {
   async accept({ params, request, response }: HttpContext) {
     const acceptValidator = vine.compile(
       vine.object({
-        email: vine.string().email().normalizeEmail(),
+        email: vine.string().email(),
         password: vine.string().minLength(8),
         fullName: vine.string().maxLength(100),
       })
