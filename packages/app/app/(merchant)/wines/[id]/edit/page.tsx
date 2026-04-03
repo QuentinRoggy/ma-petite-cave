@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/select'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { ArrowLeft, Loader2, X, Plus } from 'lucide-react'
+import { ArrowLeft, Loader2, X, Plus, Camera } from 'lucide-react'
 import Link from 'next/link'
 import type { Wine } from '@/lib/types'
 
@@ -30,6 +30,20 @@ export default function EditWinePage() {
   const [foodPairings, setFoodPairings] = useState<string[]>([])
   const [newAroma, setNewAroma] = useState('')
   const [newPairing, setNewPairing] = useState('')
+  const [photoFile, setPhotoFile] = useState<File | null>(null)
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null)
+
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setPhotoFile(file)
+    setPhotoPreview(URL.createObjectURL(file))
+  }
+
+  const removePhoto = () => {
+    setPhotoFile(null)
+    setPhotoPreview(null)
+  }
 
   useEffect(() => {
     async function fetchWine() {
@@ -42,6 +56,7 @@ export default function EditWinePage() {
         setWine(data.wine)
         setAromas(data.wine.aromas || [])
         setFoodPairings(data.wine.foodPairings || [])
+        setPhotoPreview(data.wine.photoUrl || null)
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Erreur')
       } finally {
@@ -71,24 +86,44 @@ export default function EditWinePage() {
     setError(null)
 
     const formData = new FormData(e.currentTarget)
-    const data = {
-      name: formData.get('name'),
-      domain: formData.get('domain') || null,
-      vintage: formData.get('vintage') ? Number(formData.get('vintage')) : null,
-      color: formData.get('color') || null,
-      region: formData.get('region') || null,
-      grapes: formData.get('grapes') || null,
-      alcoholDegree: formData.get('alcoholDegree')
-        ? Number(formData.get('alcoholDegree'))
-        : null,
-      guardMin: formData.get('guardMin') ? Number(formData.get('guardMin')) : null,
-      guardMax: formData.get('guardMax') ? Number(formData.get('guardMax')) : null,
-      aromas: aromas.length > 0 ? aromas : null,
-      foodPairings: foodPairings.length > 0 ? foodPairings : null,
-      notes: formData.get('notes') || null,
-    }
 
     try {
+      let photoUrl: string | null | undefined = undefined
+      if (photoFile) {
+        const uploadData = new FormData()
+        uploadData.append('photo', photoFile)
+        const uploadRes = await fetch('/api/proxy/uploads/wine-photo', {
+          method: 'POST',
+          body: uploadData,
+        })
+        if (!uploadRes.ok) {
+          const err = await uploadRes.json()
+          throw new Error(err.error || "Erreur lors de l'upload de la photo")
+        }
+        const uploadJson = await uploadRes.json()
+        photoUrl = uploadJson.photoUrl
+      } else if (photoPreview === null) {
+        photoUrl = null
+      }
+
+      const data = {
+        name: formData.get('name'),
+        domain: formData.get('domain') || null,
+        vintage: formData.get('vintage') ? Number(formData.get('vintage')) : null,
+        color: formData.get('color') || null,
+        region: formData.get('region') || null,
+        grapes: formData.get('grapes') || null,
+        alcoholDegree: formData.get('alcoholDegree')
+          ? Number(formData.get('alcoholDegree'))
+          : null,
+        guardMin: formData.get('guardMin') ? Number(formData.get('guardMin')) : null,
+        guardMax: formData.get('guardMax') ? Number(formData.get('guardMax')) : null,
+        aromas: aromas.length > 0 ? aromas : null,
+        foodPairings: foodPairings.length > 0 ? foodPairings : null,
+        notes: formData.get('notes') || null,
+        ...(photoUrl !== undefined ? { photoUrl } : {}),
+      }
+
       const res = await fetch(`/api/proxy/merchant/wines/${params.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -150,6 +185,48 @@ export default function EditWinePage() {
             {error}
           </div>
         )}
+
+        {/* Photo */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Photo</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <label className="cursor-pointer block">
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handlePhotoChange}
+              />
+              {photoPreview ? (
+                <div className="relative">
+                  <img
+                    src={photoPreview}
+                    alt="Aperçu"
+                    className="w-full h-48 object-cover rounded-lg"
+                  />
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      removePhoto()
+                    }}
+                    className="absolute top-2 right-2 bg-background/80 rounded-full p-1 hover:bg-background"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              ) : (
+                <div className="border-2 border-dashed rounded-lg h-48 flex flex-col items-center justify-center gap-2 text-muted-foreground hover:border-primary transition-colors">
+                  <Camera className="h-8 w-8" />
+                  <span className="text-sm">Ajouter une photo</span>
+                  <span className="text-xs">JPG, PNG, WEBP, HEIC · 10 Mo max</span>
+                </div>
+              )}
+            </label>
+          </CardContent>
+        </Card>
 
         {/* Infos de base */}
         <Card>
