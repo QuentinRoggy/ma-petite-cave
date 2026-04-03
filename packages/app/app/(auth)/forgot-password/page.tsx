@@ -28,15 +28,19 @@ export default function ForgotPasswordPage() {
     const email = formData.get('email') as string
 
     try {
-      const res = await fetch('/api/proxy/auth/forgot-password', {
+      const res = await fetch('/api/auth/forgot-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
       })
 
       if (!res.ok) {
-        const data = await res.json()
-        throw new Error(data.message || 'Une erreur est survenue')
+        let message = 'Une erreur est survenue'
+        try {
+          const data = await res.json()
+          message = data.message || message
+        } catch {}
+        throw new Error(message)
       }
 
       setSubmitted(true)
