@@ -1,0 +1,12 @@
+diff --git a/build/index.js b/build/index.js
+index 187220aa82d1ce39cc7333ae4b2957737a0a96df..00bdf0cb8b1854204403861c73c1d5ad6d0c9795 100644
+--- a/build/index.js
++++ b/build/index.js
+@@ -873,6 +873,7 @@ import { RuntimeException } from "@poppinss/utils";
+ 
+ // schemas/main.ts
+ var schema = {
++  $id: "adonisjs://ace/command-metadata",
+   $ref: "#/definitions/CommandMetaData",
+   $schema: "http://json-schema.org/draft-07/schema#",
+   definitions: {
