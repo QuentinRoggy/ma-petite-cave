@@ -15,5 +15,10 @@
   "packageManager": "pnpm@10.12.3",
   "dependencies": {
     "concurrently": "^9.2.1"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@adonisjs/ace@13.4.0": "patches/@adonisjs__ace@13.4.0.patch"
+    }
   }
 }
